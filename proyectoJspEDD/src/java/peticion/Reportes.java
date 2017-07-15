@@ -5,11 +5,14 @@
  */
 package peticion;
 
-import com.squareup.okhttp.FormEncodingBuilder;
-import com.squareup.okhttp.RequestBody;
 import static consulta.WebServer.consultaPython;
+import static consulta.graphviz.graficar;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,8 +23,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author alejandro
  */
-@WebServlet(name = "Login", urlPatterns = {"/AutenticarUsuario"})
-public class Login extends HttpServlet {
+@WebServlet(name = "Reportes", urlPatterns = {"/Reportes"})
+public class Reportes extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,26 +39,34 @@ public class Login extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            String user = request.getParameter("user");
-            String pass = request.getParameter("pass");
-           
-            RequestBody formBody = new FormEncodingBuilder().add("user",user).add("pass",pass).build();
-            String respuesta = consultaPython("auntenticar", formBody); 
-            if(respuesta.equals("True")){
-                request.getSession().setAttribute("user", user);
-                if(user.equals("admin")){
-                    response.sendRedirect("MenuPrincipal.jsp");
-                }else{
-                    response.sendRedirect("MenuUser.jsp");
-                }
-                
-                
-            }else{
-                response.sendRedirect("index.jsp");    
-            }
-        }
+            String arbol = consultaPython("imgArbol", null);
+            this.crearFile(arbol, "arbol");
+            graficar("arbol");
+            
+            String espejo = consultaPython("imgEspejo", null);
+            this.crearFile(espejo, "espejo");
+            graficar("espejo");
+            
+            response.sendRedirect("Reportes.jsp");
+        }catch(Exception e){}
     }
+   
+   private void crearFile(String respuesta,String nombre){
+       try{
+        String ruta = "C:\\proyectoJspEDD\\web\\graficar\\"+nombre+".txt";
+            File archivo = new File(ruta);
+            BufferedWriter bw;
+            if(archivo.exists()) {
+                bw = new BufferedWriter(new FileWriter(archivo));
+                bw.write(respuesta);
+                } else {
+                    bw = new BufferedWriter(new FileWriter(archivo));
+                    bw.write(respuesta);
+                }
+                bw.close();
+       }catch(Exception e){}
+   
+   }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

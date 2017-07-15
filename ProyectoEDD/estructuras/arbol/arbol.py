@@ -4,6 +4,7 @@ class Arbol:
 
 	def __init__(self):
 		self.__raiz = None
+		self.texto = ""
 
 ########################################## insertar ###############################
 
@@ -113,12 +114,130 @@ class Arbol:
 		else:
 			return False
 
+##################################### reportes #######################################
+
+#------------------------------------  imagen con lista -----------------------------
+
+	def __imagen(self,raiz):
+		if raiz!=None:
+			if raiz.izquierdo==None and raiz.derecho==None and self.__raiz==raiz:
+				self.texto = self.texto + "\""+raiz.nombre+"\""
+			if raiz.izquierdo!=None:
+				self.texto = self.texto + "\""+raiz.nombre+"\""
+				self.texto = self.texto +"->"+"\""+raiz.izquierdo.nombre+"\"[label=\"izquierdo\"];\n"
+			if raiz.derecho!=None:
+				self.texto = self.texto + "\""+raiz.nombre+"\""
+				self.texto = self.texto +"->"+"\""+raiz.derecho.nombre+"\"[label=\"derecho\"];\n"
+			self.__imagen(raiz.izquierdo)
+			self.__imagen(raiz.derecho)
+
+	def __imgLista(self,raiz):
+		if raiz!=None:
+			if raiz.lista!=None:
+				self.texto = self.texto + "subgraph cluster"+raiz.nombre+"{ \n label=\""+raiz.nombre+"\"\n"
+				for nodo in raiz.lista.registros():
+					if nodo.anterior!=None:
+						self.texto = self.texto + "\""+str(nodo.id)+","+nodo.nombreOponente+"\""+"->"+"\""+str(nodo.anterior.id)+","+nodo.anterior.nombreOponente+"\"\n"
+					if nodo.siguiente!=None:
+						self.texto = self.texto + "\""+str(nodo.id)+","+nodo.nombreOponente+"\""+"->"+"\""+str(nodo.siguiente.id)+","+nodo.siguiente.nombreOponente+"\"\n"
+				self.texto = self.texto +"}\n"
+			self.__imgLista(raiz.izquierdo)
+			self.__imgLista(raiz.derecho)
+
+	def imagen(self):
+		self.texto = "digraph G { \n node[style=filled,shape=record,width=1,height=1];\n"
+		self.texto = self.texto + "	subgraph clusterArbol{ \n label=\"arbol\";\n"
+		self.__imagen(self.__raiz)
+		self.texto = self.texto  + "\n}\n"
+		self.__imgLista(self.__raiz)
+		self.texto = self.texto  + "\n}"
+
+#---------------------------------------------------------------------------------------------
+
+#------------------------------------- imagen espejo del arbol -------------------------------
+
+	def __espejo(self,raiz):
+		if raiz!=None:
+			if raiz.izquierdo==None and raiz.derecho==None and self.__raiz==raiz:
+				self.texto = self.texto + "\""+raiz.nombre+"\""
+			if raiz.derecho!=None:
+				self.texto = self.texto + "\""+raiz.nombre+"\""
+				self.texto = self.texto +"->"+"\""+raiz.derecho.nombre+"\"[label=\"derecho\"];\n"
+			if raiz.izquierdo!=None:
+				self.texto = self.texto + "\""+raiz.nombre+"\"" 
+				self.texto = self.texto +"->"+"\""+raiz.izquierdo.nombre+"\"[label=\"izquierdo\"];\n"
+			self.__espejo(raiz.izquierdo)
+			self.__espejo(raiz.derecho)
+
+	def espejo(self):
+		self.texto = "digraph G { \n node[style=filled,shape=record,width=1,height=1];\n"
+		self.texto = self.texto + "	subgraph clusterArbol{ \n label=\"Espejo\";\n"
+		self.__espejo(self.__raiz)
+		self.texto = self.texto  + "\n}\n"
+		self.texto = self.texto + "}"
+
+#------------------------------------------------------------------------------------------------
+
+#-------------------------------------- Nivel --------------------------------------------------
+	
+	def __altura(self, raiz,nivel):
+		if raiz==None:
+			return 0;
+		else:
+			altura = self.__altura(raiz.izquierdo,nivel+1)
+			if nivel>altura:
+				altura = nivel
+			alturaDer = self.__altura(raiz.derecho,nivel+1)
+			if alturaDer>altura:
+				altura = alturaDer
+			return altura
+			
+
+	def altura(self):
+		return  self.__altura(self.__raiz,0)
+#------------------------------------------------------------------------------------------------
+
+#-------------------------------------- Nodos hojas ---------------------------------------------
+
+	def __hojas(self,raiz,contador):
+		if raiz==None:
+			return contador
+		else:
+			if raiz.izquierdo==None and raiz.derecho==None and self.__raiz!=raiz:
+				contador+=1
+			contador = self.__hojas(raiz.izquierdo,contador)
+			contador = self.__hojas(raiz.derecho,contador)
+			return contador
+
+	def hojas(self):
+		return self.__hojas(self.__raiz,0)
+
+#------------------------------------------------------------------------------------------------
+
+#-------------------------------------- Nodos rama ----------------------------------------------
+
+	def __rama(self,raiz,contador):
+		if raiz==None:
+			return contador
+		else:
+			if raiz.izquierdo!=None or raiz.derecho!=None and self.__raiz!=raiz:
+				contador+=1
+			contador = self.__rama(raiz.izquierdo,contador)
+			contador = self.__rama(raiz.derecho,contador)
+			return contador
+
+	def rama(self):
+		return self.__rama(self.__raiz,0)
+
+#------------------------------------------------------------------------------------------------
+
+
 #################################################### imprimir ##########################
 
 	def __imprimir(self,raiz):# imprimir 
 		if raiz!=None:	
 			self.__imprimir(raiz.izquierdo)
-			print(raiz.nombre,raiz.contraseña,raiz.estado,raiz.lista)
+			print(raiz.nombre,raiz.contraseña,raiz.estado)
 			self.__imprimir(raiz.derecho)
 
 

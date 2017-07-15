@@ -10,3 +10,20 @@ and open the template in the editor.
 body{
     background-color: aquamarine;
 }
+img{
+    height: 100%;
+    width: 100%;
+ 
+}
+.imagen{
+    height: 25%;
+    width: 25%;
+    overflow: hidden;
+    resize: both;
+    display: block;
+}
+a{
+    color:black;
+    text-decoration:none;
+    
+}

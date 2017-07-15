@@ -25,10 +25,16 @@
         <center>
             <p><h2>Registro de Usuarios</h2></p>
             <form action="RegistroUser" method="post">
-                <p>Nombre Usuario:<br></p>
-                <p><input type="text" name="user" id="user" min="0" max="10" pattern="[a-z0-9]+" required=""><br></p>
-                <p>Contraseña:<br></p>
-                <p><input type="text" name="pass" id="pass" min="0" max="10" pattern="[a-z0-9]+" required=""><br></p>
+                <table> 
+                    <tr>
+                        <th>Nombre Usuario:</th>
+                        <th><input type="text" name="user" id="user" min="0" max="10" pattern="[a-z0-9]+" required=""></th>
+                    </tr>
+                    <tr>
+                        <th>Contraseña:</th>
+                        <th><input type="text" name="pass" id="pass" min="0" max="10" pattern="[a-z0-9]+" required=""></th>
+                    </tr>
+                </table>
                 <p><input type="submit" name="registrar" id="registrar" value="Registrar"></p>
             </form>
         </center>

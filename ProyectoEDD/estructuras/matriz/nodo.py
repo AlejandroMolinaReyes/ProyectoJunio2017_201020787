@@ -11,3 +11,5 @@ class Nodo:
 		self.abajo = None
 		self.izquierda = None
 		self.derecha = None
+
+

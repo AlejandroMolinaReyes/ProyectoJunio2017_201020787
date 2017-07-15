@@ -43,9 +43,9 @@ public class RegistroUsuario extends HttpServlet {
            RequestBody formBody = new FormEncodingBuilder().add("user",user).add("pass",pass).build();
           String respuesta = consultaPython("registrar", formBody); 
            if(respuesta.equals("True")){
-               response.sendRedirect("RegistroUsuario.jsp");
+               response.sendRedirect("index.jsp");
            }else{
-               response.sendRedirect("index.jsp");    
+               response.sendRedirect("RegistroUsuario.jsp");    
            }
            
         }

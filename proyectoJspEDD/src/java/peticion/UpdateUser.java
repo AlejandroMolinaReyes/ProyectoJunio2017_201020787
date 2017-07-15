@@ -20,8 +20,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author alejandro
  */
-@WebServlet(name = "Login", urlPatterns = {"/AutenticarUsuario"})
-public class Login extends HttpServlet {
+@WebServlet(name = "UpdateUser", urlPatterns = {"/ActualizarUsuario"})
+public class UpdateUser extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,21 +39,15 @@ public class Login extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             String user = request.getParameter("user");
             String pass = request.getParameter("pass");
-           
-            RequestBody formBody = new FormEncodingBuilder().add("user",user).add("pass",pass).build();
-            String respuesta = consultaPython("auntenticar", formBody); 
-            if(respuesta.equals("True")){
-                request.getSession().setAttribute("user", user);
-                if(user.equals("admin")){
-                    response.sendRedirect("MenuPrincipal.jsp");
-                }else{
-                    response.sendRedirect("MenuUser.jsp");
-                }
-                
-                
-            }else{
-                response.sendRedirect("index.jsp");    
-            }
+            String update = request.getParameter("update");
+            RequestBody formBody = new FormEncodingBuilder()
+                    .add("user",user)
+                    .add("pass",pass)
+                    .add("update",update).build();
+            String respuesta = consultaPython("actualizarUsuario", formBody);
+            response.sendRedirect("MenuPrincipal.jsp");
+            
+            
         }
     }
 

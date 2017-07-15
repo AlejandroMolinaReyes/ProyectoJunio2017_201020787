@@ -4,6 +4,8 @@ class Matriz:
 
 	def __init__(self,columna,fila,profundida):
 		self.matriz = None
+		self.columna = columna
+		self.fila = fila
 		self.crear(columna,fila,profundida)
 
 	def crear(self,columna,fila,profundida):
@@ -112,7 +114,24 @@ class Matriz:
 				ultimoProfundida = ultimoColumna = ultimoFila = auxColumna = nuevo
 				contadorColumna+=1
 				#print(nuevo.columna,nuevo.fila,nuevo.profundida)
+
+########################################### buscar #############################################
+	
+	def buscar(self,x,y):
+		auxf = self.matriz
+		auxc = self.matriz
+		auxfo = self.matriz
+		while auxfo:
+			while auxf:
+				while auxc:
+					if auxc.columna ==x and auxc.fila==y:
+						return auxc
+					auxc = auxc.siguiente
+				auxf = auxc= auxf.derecha
+			auxfo = auxf = auxc = auxfo.abajo
+
 				
+############################################ imprimir ##########################################
 
 	def imprimir(self):
 		auxf = self.matriz

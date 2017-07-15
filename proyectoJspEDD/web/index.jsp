@@ -25,11 +25,17 @@
     <center>
         <p><h2>Login</h2></p>
         <form action="AutenticarUsuario" method="post">
-            <p>Nombre Usuario:<br></p>
-            <p><input type="text" name="user" id="user" min="0" max="10" pattern="[a-z0-9]+" required=""><br></p>
-            <p>Contraseña:<br></p>
-            <p><input type="password" name="pass" id="pass" min="0" max="10" pattern="[a-z0-9]+" required=""><br></p>
-            <p><input type="submit" name="entrar" id="entrar" value="Entrar"></p>
+            <table> 
+                    <tr>
+                        <th>Nombre Usuario:</th>
+                        <th><input type="text" name="user" id="user" min="0" max="10" pattern="[a-z0-9]+" required=""></th>
+                    </tr>
+                    <tr>
+                        <th>Contraseña:</th>
+                        <th><input type="password" name="pass" id="pass" min="0" max="10" pattern="[a-z0-9]+" required=""></th>
+                    </tr>
+                </table>
+                <p><input type="submit" name="entrar" id="entrar" value="Entrar"></p>
         </form>
     </center>
         
